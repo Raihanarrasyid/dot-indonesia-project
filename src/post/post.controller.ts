@@ -51,7 +51,6 @@ export class PostController {
   @Header('content-type', 'application/json')
   @Delete()
   deletePost(@Param('id') id: string, @Request() req: any) {
-    const userId = req.user.sub;
-    return this.postService.deletePost(id, userId);
+    return this.postService.deletePost(id);
   }
 }
