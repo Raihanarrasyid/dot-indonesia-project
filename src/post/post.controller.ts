@@ -9,6 +9,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -50,7 +51,7 @@ export class PostController {
   @HttpCode(HttpStatus.OK)
   @Header('content-type', 'application/json')
   @Delete()
-  deletePost(@Param('id') id: string, @Request() req: any) {
+  deletePost(@Query('id') id: number, @Request() req: any) {
     return this.postService.deletePost(id);
   }
 }
