@@ -1,11 +1,13 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Header,
   HttpCode,
   HttpStatus,
   Post,
+  Put,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -17,11 +19,6 @@ import { AuthGuard } from 'src/auth/auth.guard';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
-  @Get()
-  hello(): string {
-    return 'Hello World!';
-  }
 
   @HttpCode(HttpStatus.OK)
   @Header('content-type', 'application/json')
@@ -47,5 +44,36 @@ export class UserController {
       username: req.user.username,
     };
     return user;
+  }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Header('content-type', 'application/json')
+  @Put()
+  async update(@Request() req: any, @Body() createUserDTO: CreateUserDto) {
+    const updatedUser: User = await this.userService.updateUser(
+      req.user.sub,
+      createUserDTO,
+    );
+    const userResponse = {
+      id: updatedUser.id,
+      username: updatedUser.username,
+    };
+
+    return userResponse;
+  }
+
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Header('content-type', 'application/json')
+  @Delete()
+  async delete(@Request() req: any) {
+    const deletedUser: User = await this.userService.deleteUser(req.user.sub);
+    const userResponse = {
+      id: deletedUser.id,
+      username: deletedUser.username,
+    };
+
+    return userResponse;
   }
 }

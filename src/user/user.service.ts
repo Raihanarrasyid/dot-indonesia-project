@@ -37,4 +37,25 @@ export class UserService {
   async comparePasswords(plainTextPassword: string, hashedPassword: string) {
     return bcrypt.compare(plainTextPassword, hashedPassword);
   }
+
+  async updateUser(id: number, createUserDto: CreateUserDto) {
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+    return this.prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        username: createUserDto.username,
+        password: hashedPassword,
+      },
+    });
+  }
+
+  async deleteUser(id: number) {
+    return this.prisma.user.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }

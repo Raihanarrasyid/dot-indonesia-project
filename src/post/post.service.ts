@@ -28,4 +28,24 @@ export class PostService {
       },
     });
   }
+
+  async updatePost(postDto: PostDto) {
+    return this.prisma.post.update({
+      where: {
+        id: postDto.id,
+      },
+      data: {
+        title: postDto.title,
+        content: postDto.content,
+      },
+    });
+  }
+
+  async deletePost(id: string, userId: number) {
+    return this.prisma.post.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+  }
 }
