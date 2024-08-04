@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
+import { PostDto } from './dto/post.dto';
 
 @Injectable()
 export class PostService {
@@ -16,6 +17,14 @@ export class PostService {
             id: createPostDto.userId,
           },
         },
+      },
+    });
+  }
+
+  async getAllPosts(): Promise<PostDto[]> {
+    return this.prisma.post.findMany({
+      include: {
+        user: true,
       },
     });
   }

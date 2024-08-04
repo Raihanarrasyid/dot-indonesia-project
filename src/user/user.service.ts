@@ -8,7 +8,7 @@ import { UserDto } from './dto/user.dto';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async createUser(createUserDto: CreateUserDto) {
+  async createUser(createUserDto: CreateUserDto): Promise<UserDto> {
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     return this.prisma.user.create({
       data: {
@@ -34,11 +34,7 @@ export class UserService {
     });
   }
 
-  async findAllUsers() {
-    const users = await this.prisma.user.findMany();
-    return users.map((user: UserDto) => {
-      const { id, username } = user;
-      return { id, username };
-    });
+  async comparePasswords(plainTextPassword: string, hashedPassword: string) {
+    return bcrypt.compare(plainTextPassword, hashedPassword);
   }
 }
