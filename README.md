@@ -40,3 +40,7 @@ ini adalah Project NestJS dengan 2 Operasi CRUD, dibuat dengan menggunakan NestJ
    ```
    http://localhost:3000
    ```
+
+## Dokumentasi
+
+`https://documenter.getpostman.com/view/29250153/2sA3rwNEco`
